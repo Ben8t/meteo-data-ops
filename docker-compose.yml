@@ -28,6 +28,7 @@ services:
       - kestra-data:/app/storage
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/kestra-wd:/tmp/kestra-wd
+      - ./data:/meteo_data  # map local data folder to meteo_data container folder to persist application data
     environment:
       KESTRA_CONFIGURATION: |
         datasources:
@@ -54,6 +55,10 @@ services:
             tmp-dir:
               path: /tmp/kestra-wd/tmp
           url: http://localhost:8080/
+          tasks:
+            scripts:
+              docker:
+                volume-enabled: true
     ports:
       - "8080:8080"
       - "8081:8081"
