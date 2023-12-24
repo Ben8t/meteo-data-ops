@@ -1,0 +1,16 @@
+id: query
+namespace: dev
+
+inputs:
+  - name: data
+    type: FILE
+
+tasks:
+  
+  - id: query
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    inputFiles:
+      data.csv: "{{ inputs.data }}"
+    store: true
+    sql: |
+      SELECT * FROM read_csv_auto("{{workingDir}}/data.csv")
