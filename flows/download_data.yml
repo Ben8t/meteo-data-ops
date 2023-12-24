@@ -1,0 +1,22 @@
+id: download_data
+namespace: dev
+
+inputs:
+  - name: date
+    type: STRING
+    defaults: 202312
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.fs.http.Download
+    uri: https://donneespubliques.meteofrance.fr/donnees_libres/Txt/Synop/Archive/synop.{{inputs.date}}.csv.gz
+
+  - id: convert
+    type: io.kestra.plugin.scripts.shell.Commands
+    runner: PROCESS
+    inputFiles:
+      data.csv.gz:  "{{ outputs.download.uri }}"
+    outputFiles:
+      - data.csv
+    commands:
+      - gzip -d data.csv.gz
