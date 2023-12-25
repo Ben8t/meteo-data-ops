@@ -6,11 +6,25 @@ inputs:
     type: FILE
 
 tasks:
-  
-  - id: query
-    type: io.kestra.plugin.jdbc.duckdb.Query
-    inputFiles:
-      data.csv: "{{ inputs.data }}"
-    store: true
-    sql: |
-      SELECT * FROM read_csv_auto("{{workingDir}}/data.csv")
+
+  - id: deploy
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+
+      - id: clone
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/Ben8t/meteo-data-ops
+
+      - id: deploy_files
+        type: io.kestra.plugin.scripts.shell.Commands
+        warningOnStdErr: false
+        runner: PROCESS
+        commands:
+          - /app/kestra namespace files update dev ./script ./script --server=http://0.0.0.0:8080
+
+      - id: query
+        type: io.kestra.plugin.jdbc.duckdb.Query
+        inputFiles:
+          data.csv: "{{ inputs.data }}"
+        store: true
+        sql: "{{ read('script/training_data.sql') }}"
