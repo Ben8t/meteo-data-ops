@@ -6,7 +6,8 @@ SELECT
         WHEN t = 'mq' THEN NULL
         ELSE CAST(t AS NUMERIC)
     END AS temperature
-FROM read_csv_auto("data_202312.csv")
+--FROM read_csv_auto("data_202312.csv")
+FROM read_csv_auto("{{workingDir}}/data.csv")
 )
 
 SELECT
