@@ -7,20 +7,9 @@ inputs:
 
 tasks:
 
-  - id: deploy
+  - id: wd
     type: io.kestra.core.tasks.flows.WorkingDirectory
     tasks:
-
-      - id: clone
-        type: io.kestra.plugin.git.Clone
-        url: https://github.com/Ben8t/meteo-data-ops
-
-      - id: deploy_files
-        type: io.kestra.plugin.scripts.shell.Commands
-        warningOnStdErr: false
-        runner: PROCESS
-        commands:
-          - /app/kestra namespace files update dev ./script ./script --server=http://0.0.0.0:8080
 
       - id: query
         type: io.kestra.plugin.jdbc.duckdb.Query
@@ -36,6 +25,8 @@ tasks:
       - id: train
         type: io.kestra.plugin.scripts.python.Commands
         warningOnStdErr: false
+        namespaceFiles:
+          enabled: true
         runner: PROCESS
         inputFiles:
           training_data.csv: "{{ outputs.csv_writer.uri }}"
