@@ -20,6 +20,7 @@ SELECT
     LAG(temperature, 1) OVER(PARTITION BY station_id ORDER BY date_timestamp) AS temp_1,
     LAG(temperature, 2) OVER(PARTITION BY station_id ORDER BY date_timestamp) AS temp_2,
     LAG(temperature, 3) OVER(PARTITION BY station_id ORDER BY date_timestamp) AS temp_3,
-    LAG(temperature, 4) OVER(PARTITION BY station_id ORDER BY date_timestamp) AS temp_4
+    LAG(temperature, 4) OVER(PARTITION BY station_id ORDER BY date_timestamp) AS temp_4,
+    LAG(temperature, 5) OVER(PARTITION BY station_id ORDER BY date_timestamp) AS temp_5
 FROM clean
 ;
