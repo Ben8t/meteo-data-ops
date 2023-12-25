@@ -51,7 +51,7 @@ preprocessor = build_preprocessor(numeric_features, categorical_features)
 classifier = LinearRegression()
 model = Pipeline(steps=[("preprocessor", preprocessor), ("classifier", classifier)])
 
-model.train(x_train, y_train)
+model.fit(x_train, y_train)
 
 y_pred = model.predict(x_validation)
 metrics = compute_regression_metrics(y_validation, y_pred)
