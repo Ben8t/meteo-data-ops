@@ -21,7 +21,7 @@ services:
 
   kestra:
     image: kestra/kestra:latest-full
-    pull_policy: always
+    # pull_policy: always
     user: "root"
     command: server standalone --worker-thread=128
     volumes:

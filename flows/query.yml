@@ -28,3 +28,19 @@ tasks:
           data.csv: "{{ inputs.data }}"
         store: true
         sql: "{{ read('script/training_data.sql') }}"
+
+      - id: csv_writer
+        type: io.kestra.plugin.serdes.csv.CsvWriter
+        from: "{{ outputs.query.uri }}"
+
+      - id: train
+        type: io.kestra.plugin.scripts.python.Commands
+        warningOnStdErr: false
+        runner: PROCESS
+        inputFiles:
+          training_data.csv: "{{ outputs.csv_writer.uri }}"
+        beforeCommands:
+          - pip install pandas scikit-learn
+        commands:
+          - python script/train.py
+
