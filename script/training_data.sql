@@ -12,7 +12,13 @@ FROM read_csv_auto("data_202312.csv")
 SELECT
     station_id,
     date_timestamp,
-    LEAD(temperature, 1) OVER(ORDER BY date_timestamp) AS temp_1
+    DATEPART('MONTH', date_timestamp) AS month_,
+    DATEPART('DAY', date_timestamp) AS day_,
+    DATEPART('HOUR', date_timestamp) AS hour_,
+    temperature,
+    LAG(temperature, 1) OVER(PARTITION BY station_id ORDER BY date_timestamp) AS temp_1,
+    LAG(temperature, 2) OVER(PARTITION BY station_id ORDER BY date_timestamp) AS temp_2,
+    LAG(temperature, 3) OVER(PARTITION BY station_id ORDER BY date_timestamp) AS temp_3,
+    LAG(temperature, 4) OVER(PARTITION BY station_id ORDER BY date_timestamp) AS temp_4
 FROM clean
-GROUP BY station_id, date_timestamp
 ;
