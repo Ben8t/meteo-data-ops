@@ -3,6 +3,9 @@ import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 
+
+data = pd.read_csv("data.csv")
+
 split_size = 0.3
 target = ["temperature"]
 x = data.drop(target, axis=1)
