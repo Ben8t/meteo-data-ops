@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 
 
 data = pd.read_csv("training_data.csv")
+print(data.columns)
 
 split_size = 0.3
 target = ["temperature"]
