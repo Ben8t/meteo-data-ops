@@ -30,6 +30,8 @@ tasks:
         runner: PROCESS
         inputFiles:
           training_data.csv: "{{ outputs.csv_writer.uri }}"
+        outputFiles:
+          - model.pkl
         beforeCommands:
           - pip install pandas scikit-learn
         commands:
