@@ -9,6 +9,8 @@ tasks:
 
   - id: wd
     type: io.kestra.core.tasks.flows.WorkingDirectory
+    namespaceFiles:
+      enabled: true
     tasks:
 
       - id: query
@@ -24,10 +26,6 @@ tasks:
 
       - id: train
         type: io.kestra.plugin.scripts.python.Commands
-        warningOnStdErr: false
-        namespaceFiles:
-          enabled: true
-        runner: PROCESS
         inputFiles:
           training_data.csv: "{{ outputs.csv_writer.uri }}"
         outputFiles:
@@ -36,4 +34,18 @@ tasks:
           - pip install pandas scikit-learn
         commands:
           - python script/train.py
+          - cp model.pkl /meteo_data
 
+      - id: predict
+        type: io.kestra.plugin.scripts.python.Commands
+        inputFiles:
+          predict_data.csv: "{{ outputs.csv_writer.uri }}"
+          model.pkl: "{{ outputs.train.outputFiles['model.pkl'] }}"
+        commands:
+          - python script/predict.py
+
+taskDefaults:
+  - type: io.kestra.plugin.scripts.python.Commands
+    values:
+      warningOnStdErr: false
+      runner: PROCESS
