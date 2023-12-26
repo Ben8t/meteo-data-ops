@@ -1,13 +1,13 @@
 WITH clean AS (
 SELECT 
     numer_sta AS station_id,
-    strptime(CAST(date AS VARCHAR),'%Y%M%d%H%M%S') AS date_timestamp,
+    strptime(CAST(date AS VARCHAR),'%Y%m%d%H%M%S') AS date_timestamp,
     CASE
         WHEN t = 'mq' THEN NULL
         ELSE CAST(t AS NUMERIC)
     END AS temperature
---FROM read_csv_auto("data_202312.csv")
-FROM read_csv_auto("{{workingDir}}/data.csv")
+FROM read_csv_auto("/meteo_data/data_*.csv")
+--FROM read_csv_auto("{{workingDir}}/data.csv")
 )
 
 SELECT

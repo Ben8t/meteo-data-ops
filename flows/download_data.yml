@@ -15,8 +15,10 @@ tasks:
     type: io.kestra.plugin.scripts.shell.Commands
     runner: PROCESS
     inputFiles:
-      data.csv.gz:  "{{ outputs.download.uri }}"
+      data.csv.gz: "{{ outputs.download.uri }}"
     outputFiles:
-      - data.csv
+    - "data_{{inputs.date}}.csv"
     commands:
-      - gzip -d data.csv.gz
+    - gzip -d data.csv.gz
+    - mv data.csv data_{{inputs.date}}.csv
+    - cp data_{{inputs.date}}.csv /meteo_data/
