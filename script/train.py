@@ -7,6 +7,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
+from sklearn.externals import joblib
 
 def compute_regression_metrics(y_true, y_pred):
     return {
@@ -33,6 +34,9 @@ def build_preprocessor(numeric_features: list, categorical_features: list) -> Co
 
     return preprocessor
 
+def save_model(model, file_path):
+    joblib.dump(model, file_path)
+
 
 data = pd.read_csv("training_data.csv").dropna()
 print(data.columns)
@@ -54,3 +58,5 @@ y_pred = model.predict(x_validation)
 metrics = compute_regression_metrics(y_validation, y_pred)
 
 print(metrics)
+
+save_model(model, 'model.pkl')
